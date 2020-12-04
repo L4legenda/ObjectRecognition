@@ -1,1 +1,4 @@
+venv
 .idea
+env
+tensorflow-1.8.0-py3-none-any.whl
