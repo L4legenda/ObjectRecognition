@@ -2,6 +2,8 @@ import os
 from flask import Flask, flash, request, redirect, url_for, render_template
 from werkzeug.utils import secure_filename
 
+import Tensorflow.model
+
 ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'tiff', 'jp2', 'raw']
 
 app = Flask(__name__)
@@ -31,8 +33,11 @@ def upload_file():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         print(filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return redirect(url_for('upload_file', filename=filename))
+        file.save("upload/" + filename)
+
+        answer = Tensorflow.model.recognition(filename)
+
+        return render_template('tet_manager.html', answer=answer)
     return render_template('tet_manager.html')
 
 
